@@ -1,4 +1,5 @@
 import random
+import time
 
 class Card:
     card_values = {
@@ -72,6 +73,7 @@ def hitting_split(user_cards):
                 return player_cards_value
 
         options = input("Do you want to hit or stand : ").lower()
+        time.sleep(1)
         if options == "hit":
             num_cards_player += 1
             user_card = Card(random.choice(suits_name), random.choice(cards))
@@ -106,6 +108,7 @@ def dealer(dealer_cards) :
         print(ascii_version_of_card(dealer_cards[0]))
         print(f"Dealer's current value of cards is {dealer_cards_value}")
         while dealer_cards_value < 17:
+            time.sleep(2)
             num_cards_dealer += 1
             dealer_card = Card(random.choice(suits_name), random.choice(cards))
             dealer_cards.append(dealer_card)
@@ -113,6 +116,7 @@ def dealer(dealer_cards) :
             dealer_cards_value = fix_initial_values(dealer_cards_value, [card.rank for card in dealer_cards])
             print("Dealer hits as value less than 17")
             print(ascii_version_of_card(dealer_card))
+            print(f"Dealer's current value of cards is {dealer_cards_value}")
 
         return dealer_cards_value
 
@@ -181,6 +185,7 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
                 return 
 
         options = input("Do you want to hit or stand : ").lower()
+        time.sleep(1)
         if options == "hit":
             num_cards_player += 1
             user_card = Card(random.choice(suits_name), random.choice(cards))
@@ -200,8 +205,9 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
         elif options == "stand":
             print("Dealer's hole card : ")
             print(ascii_version_of_card(dealer_cards[0]))
-
+            time.sleep(1)
             while dealer_cards_value < 17:
+                time.sleep(2)
                 num_cards_dealer += 1
                 dealer_card = Card(random.choice(suits_name), random.choice(cards))
                 dealer_cards.append(dealer_card)
@@ -209,6 +215,7 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
                 dealer_cards_value = fix_initial_values(dealer_cards_value, [card.rank for card in dealer_cards])
                 print("Dealer hits as value less than 17")
                 print(ascii_version_of_card(dealer_card))
+                print(f"Dealer's current value of cards is {dealer_cards_value}")
 
             result(player_cards_value, dealer_cards_value, "current")
             return
