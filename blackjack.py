@@ -45,7 +45,6 @@ def ascii_version_of_hidden_card(*cards):
 
     return '\n'.join([''.join(line) for line in lines])
 
-
 def get_card_value(card_name):
     return Card.card_values[card_name]
 
@@ -64,7 +63,8 @@ def fix_initial_values(cards_value, cards_list):
 
 def hitting_split(user_cards):
     player_cards_value = sum(get_card_value(card.rank) for card in user_cards)
-    player_cards_value = fix_initial_values(player_cards_value, user_cards)
+    user_cards_rank = [card.rank for card in user_cards]
+    player_cards_value = fix_initial_values(player_cards_value, user_cards_rank)
     num_cards_player = 2
 
     while True:
@@ -79,7 +79,7 @@ def hitting_split(user_cards):
             user_card = Card(random.choice(suits_name), random.choice(cards))
             user_cards.append(user_card)
             player_cards_value += get_card_value(user_card.rank)
-            player_cards_value = fix_initial_values(player_cards_value, [card.rank for card in user_cards])
+            player_cards_value = fix_initial_values(player_cards_value, user_cards_rank)
             print(ascii_version_of_card(user_card))
             print(f"Your current value of cards is {player_cards_value}")
             if player_cards_value > 21:
@@ -94,7 +94,8 @@ def hitting_split(user_cards):
 
 def dealer(dealer_cards) :
     dealer_cards_value = sum(get_card_value(card.rank) for card in dealer_cards)
-    dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards)
+    dealer_cards_rank = [card.rank for card in dealer_cards]
+    dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards_rank)
     num_cards_dealer = 2
 
     while True:
@@ -113,7 +114,7 @@ def dealer(dealer_cards) :
             dealer_card = Card(random.choice(suits_name), random.choice(cards))
             dealer_cards.append(dealer_card)
             dealer_cards_value += get_card_value(dealer_card.rank)
-            dealer_cards_value = fix_initial_values(dealer_cards_value, [card.rank for card in dealer_cards])
+            dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards_rank)
             print("Dealer hits as value less than 17")
             print(ascii_version_of_card(dealer_card))
             print(f"Dealer's current value of cards is {dealer_cards_value}")
@@ -133,6 +134,7 @@ def result(handValue, dealerHandValue, num) :
             print("Draw!")
             return 0
         else:
+            print(f"Your {num} value of cards is {handValue}")
             print(f"Dealer's value of cards is {dealerHandValue}")
             print("Dealer got blackjack! Dealer wins!")
             return -1
@@ -160,9 +162,10 @@ def result(handValue, dealerHandValue, num) :
 def play_game_loop_notSplit(user_cards, dealer_cards):
     player_cards_value = sum(get_card_value(card.rank) for card in user_cards)
     dealer_cards_value = sum(get_card_value(card.rank) for card in dealer_cards)
-
-    player_cards_value = fix_initial_values(player_cards_value, user_cards)
-    dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards)
+    user_cards_rank = [card.rank for card in user_cards]
+    dealer_cards_rank = [card.rank for card in dealer_cards]
+    player_cards_value = fix_initial_values(player_cards_value, user_cards_rank)
+    dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards_rank)
 
     num_cards_player = 2
     num_cards_dealer = 2
@@ -191,7 +194,7 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
             user_card = Card(random.choice(suits_name), random.choice(cards))
             user_cards.append(user_card)
             player_cards_value += get_card_value(user_card.rank)
-            player_cards_value = fix_initial_values(player_cards_value, [card.rank for card in user_cards])
+            player_cards_value = fix_initial_values(player_cards_value, user_cards_rank)
             print(ascii_version_of_card(user_card))
             print(f"Your current value of cards is {player_cards_value}")
             if player_cards_value > 21:
@@ -212,7 +215,7 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
                 dealer_card = Card(random.choice(suits_name), random.choice(cards))
                 dealer_cards.append(dealer_card)
                 dealer_cards_value += get_card_value(dealer_card.rank)
-                dealer_cards_value = fix_initial_values(dealer_cards_value, [card.rank for card in dealer_cards])
+                dealer_cards_value = fix_initial_values(dealer_cards_value, dealer_cards_rank)
                 print("Dealer hits as value less than 17")
                 print(ascii_version_of_card(dealer_card))
                 print(f"Dealer's current value of cards is {dealer_cards_value}")
@@ -224,6 +227,7 @@ def play_game_loop_notSplit(user_cards, dealer_cards):
 
 def main():
     user_cards = [Card(random.choice(suits_name), random.choice(cards)) for _ in range(2)]
+    # user_cards = [Card("Hearts", "Ace"), Card("Spades", "Ace")]
     dealer_cards = [Card(random.choice(suits_name), random.choice(cards)) for _ in range(2)]
     
     print("Your Cards : ")
@@ -280,10 +284,7 @@ def main():
     else :
         play_game_loop_notSplit(user_cards, dealer_cards)
 
-
 if __name__ == "__main__":
     suits_name = ['Spades', 'Diamonds', 'Hearts', 'Clubs']
     cards = ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen', 'King']
     main()
-
-
